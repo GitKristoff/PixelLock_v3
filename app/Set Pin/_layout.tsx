@@ -1,15 +1,14 @@
+
+
 import { Stack } from "expo-router";
 
-export default function rootLayout(){
+export default function setPinLayout(){
     return(
-        <>
-        
         <Stack screenOptions={{
             headerShown: false
         }}>
-            <Stack.Screen name = 'index'/>
+            
+            <Stack.Screen name = 'setPin'/>
         </Stack>
-
-        </>
     );
 }

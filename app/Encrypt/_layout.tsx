@@ -5,9 +5,14 @@ export default function rootLayout(){
         <>
         
         <Stack screenOptions={{
-            headerShown: false
+            title: 'Encryption'
         }}>
-            <Stack.Screen name = 'index'/>
+            <Stack.Screen name = 'encryptA'
+            options={{
+                
+            }}
+            />
+            
         </Stack>
 
         </>
