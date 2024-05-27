@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "PixelLock_v3",
-    "slug": "PixelLock_v3",
+    "name": "PixelLock",
+    "slug": "pixellockdemo",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/pixelLock Logo.png",
     "scheme": "myapp",
     "userInterfaceStyle": "automatic",
     "splash": {
@@ -19,7 +19,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.meowzkhi_15.pixellockdemo"
     },
     "web": {
       "bundler": "metro",
@@ -31,6 +32,15 @@
     ],
     "experiments": {
       "typedRoutes": true
-    }
+    },
+    "extra": {
+      "router": {
+        "origin": false
+      },
+      "eas": {
+        "projectId": "ee06996b-138c-4498-a244-dbaa72e66199"
+      }
+    },
+    "owner": "meowzkhi_15"
   }
 }
