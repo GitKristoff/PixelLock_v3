@@ -12,7 +12,7 @@ export default function mainHomePage(){
             </Pressable>
             </Link>
 
-            <Link href='/' asChild>
+            <Link href='/Decrypt/decrypt' asChild>
             <Pressable style={style.decryptBtn}>
             <Text style={style.decrypt_btn_text}>Decrypt</Text>
             </Pressable>

@@ -1,13 +1,13 @@
 import { Stack } from "expo-router";
 
-export default function encryptLayout(){
+export default function decryptLayout(){
     return(
         <>
         
         <Stack screenOptions={{
-            title: 'Encryption'
+            title: 'Decryption'
         }}>
-            <Stack.Screen name = 'encryptA'
+            <Stack.Screen name = 'decrypt'
             options={{
                 
             }}

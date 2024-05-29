@@ -1,70 +1,66 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Image, Alert } from 'react-native';
-import ImagePicker from 'react-native-image-crop-picker';
-import * as FileSystem from 'expo-file-system';
-import CryptoJS from 'crypto-js';
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from 'react-native';
 
-const SecureSnap = () => {
-  const [fileUri, setFileUri] = useState<string>('');
-  const [fileName, setFileName] = useState<string>('');
-  const [encryptedUri, setEncryptedUri] = useState<string>('');
+const SecureText: React.FC = () => {
+  const [textInput, setTextInput] = useState<string>('');
+  const [shiftAmount, setShiftAmount] = useState<number>(3); // Default shift amount
 
-  const chooseFile = async () => {
-    try {
-      const image = await ImagePicker.openPicker({
-        width: 300,
-        height: 400,
-        cropping: false,
-        includeBase64: true,
-      });
-      setFileUri(image.path);
-      setFileName(image.path.split('/').pop() || 'image');
-    } catch (error) {
-      console.error('Image picking cancelled', error);
-    }
-  };
-
-  const generateKey = () => {
-    // Generate a 256-bit key for AES encryption
-    const key = CryptoJS.lib.WordArray.random(32).toString(CryptoJS.enc.Hex);
-    return key;
-  };
-
-  const encryptFile = async () => {
-    if (!fileUri) {
-      Alert.alert('Error', 'Please choose a file to encrypt.');
+  const encryptText = () => {
+    if (!textInput) {
+      Alert.alert('Error', 'Please enter a message to encrypt.');
       return;
     }
 
-    try {
-      const fileData = await FileSystem.readAsStringAsync(fileUri, { encoding: FileSystem.EncodingType.Base64 });
-      const key = generateKey();
-      const encrypted = CryptoJS.AES.encrypt(fileData, key).toString();
-      const encryptedFilePath = `${FileSystem.documentDirectory}${fileName}.enc`;
-      await FileSystem.writeAsStringAsync(encryptedFilePath, encrypted, { encoding: FileSystem.EncodingType.UTF8 });
-      setEncryptedUri(encryptedFilePath);
-      Alert.alert('Success', 'File encrypted successfully.');
-    } catch (error) {
-      console.error('Encryption failed:', error);
-      Alert.alert('Error', 'Failed to encrypt the file.');
+    // Encrypt the text using Caesar cipher with the user-defined shift amount
+    const encryptedData = caesarCipher(textInput, shiftAmount);
+
+    // Update the state to display the encrypted text
+    setTextInput(encryptedData);
+  };
+
+  const increaseShift = () => {
+    setShiftAmount(shiftAmount + 1);
+  };
+
+  const decreaseShift = () => {
+    if (shiftAmount > 1) {
+      setShiftAmount(shiftAmount - 1);
     }
+  };
+
+  // Caesar cipher function
+  const caesarCipher = (text: string, shift: number): string => {
+    return text.replace(/[a-zA-Z]/g, (char) => {
+      let code = char.charCodeAt(0);
+      if (code >= 65 && code <= 90) {
+        code = ((code - 65 + shift) % 26) + 65;
+      } else if (code >= 97 && code <= 122) {
+        code = ((code - 97 + shift) % 26) + 97;
+      }
+      return String.fromCharCode(code);
+    });
   };
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.chooseFileButton} onPress={chooseFile}>
-        <Text style={styles.buttonText}>Choose File Image</Text>
-      </TouchableOpacity>
-      <Text style={styles.fileName}>{fileName || 'No File Chosen'}</Text>
-      {fileUri && (
-        <Image source={{ uri: fileUri }} style={styles.image} />
-      )}
-      <TouchableOpacity style={styles.encryptButton} onPress={encryptFile}>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter message"
+        onChangeText={setTextInput}
+        value={textInput}
+      />
+      <View style={styles.shiftButtonContainer}>
+        <TouchableOpacity style={styles.shiftButton} onPress={increaseShift}>
+          <Text style={styles.buttonText}>+</Text>
+        </TouchableOpacity>
+        <Text style={styles.shiftText}>Shift: {shiftAmount}</Text>
+        <TouchableOpacity style={styles.shiftButton} onPress={decreaseShift}>
+          <Text style={styles.buttonText}>-</Text>
+        </TouchableOpacity>
+      </View>
+      <TouchableOpacity style={styles.encryptButton} onPress={encryptText}>
         <Text style={styles.buttonText}>Encrypt</Text>
       </TouchableOpacity>
-      {encryptedUri && (
-        <Text style={styles.encryptedText}>File encrypted and saved at: {encryptedUri}</Text>
-      )}
     </View>
   );
 };
@@ -77,39 +73,45 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  chooseFileButton: {
+  input: {
+    height: 50,
+    width: '90%',
+    borderColor: 'rgba(255, 242, 225, 1)',
+    borderWidth: 2,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    color: 'rgba(255, 242, 225, 1)',
+    fontSize: 18
+  },
+  shiftButtonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 50,
+  },
+  shiftButton: {
     backgroundColor: '#8B6F47',
     padding: 10,
     borderRadius: 5,
-    marginBottom: 20,
+    marginHorizontal: 10,
   },
-  fileName: {
-    marginVertical: 10,
+  shiftText: {
     fontSize: 16,
-    textAlign: 'center',
-  },
-  image: {
-    width: 200,
-    height: 200,
-    marginVertical: 20,
+    fontWeight:'600'
   },
   encryptButton: {
     backgroundColor: '#8B6F47',
     padding: 10,
     borderRadius: 5,
     marginTop: 20,
+    width: 350,
+    height:50
   },
   buttonText: {
     color: '#fff',
     textAlign: 'center',
-    fontSize: 16,
-  },
-  encryptedText: {
-    marginVertical: 10,
-    fontSize: 16,
-    textAlign: 'center',
-    color: 'red',
+    fontSize: 24,
   },
 });
 
-export default SecureSnap;
+export default SecureText;

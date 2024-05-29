@@ -6,7 +6,7 @@ export default function index(){
         <>
         <View style={style.container}>
 
-            <Link href='/Set Pin/setPin' asChild>
+            <Link href='mainHomePage' asChild>
             <Pressable style={style.getStartedBtn}>
             <Text style={style.home_title}>Get Started</Text>
             </Pressable>
