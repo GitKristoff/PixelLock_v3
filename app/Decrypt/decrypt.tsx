@@ -84,7 +84,8 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     paddingHorizontal: 10,
     color: 'rgba(255, 242, 225, 1)',
-    fontSize: 18
+    fontSize: 18,
+    backgroundColor: 'rgba(57, 41, 21, 1)'
   },
   shiftButtonContainer: {
     flexDirection: 'row',

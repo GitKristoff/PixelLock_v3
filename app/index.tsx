@@ -1,11 +1,14 @@
 import { View, Text, StyleSheet, Pressable} from "react-native"
 import { Link } from "expo-router"
+import { Image } from "expo-image"
 
 export default function index(){
     return(
         <>
         <View style={style.container}>
+            <Image source={require('../assets/images/cipher_creator.png')} style={style.home_image}/>
 
+            <Text style={style.intro_text}>Welcome to Encryptify, the ultimate solution for encrypting and decrypting your text using the Caesar Cipher method. </Text>
             <Link href='mainHomePage' asChild>
             <Pressable style={style.getStartedBtn}>
             <Text style={style.home_title}>Get Started</Text>
@@ -34,12 +37,30 @@ const style = StyleSheet.create({
         borderWidth: 2,
         borderColor: 'white',
         width: 300,
+        elevation: 5
+    },
 
+    intro_text:{
+        fontSize: 18,
+        textAlign: 'center',
+        fontStyle: 'italic',
+        fontWeight: 'condensed',
+        color: 'rgba(255, 242, 225, 1)',
+        marginBottom: 200,
+        width: 300,
+        elevation: 5
+    },
+
+    home_image:{
+        width: 250,
+        height: 300,
+        marginBottom: 50
     },
 
     home_title:{
         fontSize: 24,
         color: 'rgba(255, 242, 225, 1)',
-        textAlign:'center'
+        textAlign:'center',
+        elevation: 5
     }
 })
